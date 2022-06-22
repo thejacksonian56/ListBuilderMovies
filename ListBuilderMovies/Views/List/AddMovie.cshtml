@@ -1,0 +1,98 @@
+﻿@model ListBuilderMovies.Models.Movie
+
+@{
+    ViewData["Title"] = "AddMovie";
+    string img = "https://image.tmdb.org/t/p/original";
+    string idd = "https://www.themoviedb.org/movie/";
+}
+
+<h1>AddMovie</h1>
+
+<h4>Movie</h4>
+<hr />
+<form asp-controller="List" asp-action="AddMovie" method="get">
+    <p>
+        Title: <input type="text" name="query" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+<div class="row row-cols-1 rows-cols-md-2 g-4">
+    @if (ViewBag.Query != null)
+    {
+        
+        foreach (Result x in ViewBag.Query.results)
+        {
+            img = img + x.poster_path;
+            idd = idd + x.id;
+            <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="@img" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">@x.title</h5>
+                <p class="card-text">@x.overview</p>
+                <a href="@idd" target="_blank" class="btn btn-primary">TMBD</a>
+                <a asp-action="AddMovie" asp-route-id="@Model.Id" asp-route-t="@x.title" asp-route-d="@x.overview" asp-route-p="@img" asp-route-i="@idd" class="btn btn-primary" method="post">Add Movie</a>
+                </div>
+            </div>
+            </div>
+            img = "https://image.tmdb.org/t/p/original";
+            idd = "https://www.themoviedb.org/movie/";
+        }
+    }
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddMovie">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" disabled/>
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageLocation" class="control-label"></label>
+                <input asp-for="ImageLocation" class="form-control" />
+                <span asp-validation-for="ImageLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Url" class="control-label"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Return</a>
+</div>
+
+<script type="text/javascript">
+    let btnSearch = document.getElementById("btnSearch");
+    let searchText = document.getElementById("searchText");
+    let res = document.getElementById("res");
+    var bonk;
+    btnSearch.addEventListener("click", function() {
+        
+
+    })
+
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

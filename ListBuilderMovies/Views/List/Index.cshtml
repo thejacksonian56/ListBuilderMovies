@@ -1,0 +1,51 @@
+﻿@model ListBuilderMovies.Models.IndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>User</th>
+            <th>Description</th>
+            <th>Posters</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.movieLists) {
+        <tr>
+            <td>
+                @item.id
+            </td>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.User
+            </td>
+            <td>
+                @item.Description
+            </td>
+            <td>
+                    @foreach(Movie x in item.Movies)
+                    {
+                        <img src="@x.ImageLocation" width="60" height="100" />
+                    }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.id">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
