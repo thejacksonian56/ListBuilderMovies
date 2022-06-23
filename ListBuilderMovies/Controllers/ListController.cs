@@ -35,7 +35,7 @@ namespace ListBuilderMovies.Controllers
         public IActionResult Create(MovieList obj)
         {
             _tempdata.newMovieList(obj);
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", new { id = obj.id });
         }
 
         public IActionResult Details(int? id)
@@ -69,7 +69,7 @@ namespace ListBuilderMovies.Controllers
         public IActionResult Edit(MovieList movieList)
         {
             _tempdata.editMovieList(movieList);
-            return View(movieList);
+            return RedirectToAction("Details", new { id = movieList.id });
         }
 
         [HttpGet]
@@ -86,7 +86,7 @@ namespace ListBuilderMovies.Controllers
                     Id = id
                 };
                 _tempdata.addMovie(tester);
-                return View(tester);
+                return RedirectToAction("Details", new { id = tester.Id });
             }
             else
             {
@@ -100,7 +100,7 @@ namespace ListBuilderMovies.Controllers
                     APICall call = response.Result;
                     ViewBag.Query = call;
                 }
-                return View(movie); 
+                return View(movie);
             }
         }
 
@@ -112,7 +112,7 @@ namespace ListBuilderMovies.Controllers
                 _tempdata.addMovie(movie);
                 return View(movie);
             }
-            return View();
+            return RedirectToAction("Details", new {id = movie.Id});
         }
     }
 }
