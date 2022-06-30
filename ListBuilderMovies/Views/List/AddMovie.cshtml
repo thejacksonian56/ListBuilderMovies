@@ -31,7 +31,7 @@
                 <h5 class="card-title">@x.title</h5>
                 <p class="card-text">@x.overview</p>
                 <a href="@idd" target="_blank" class="btn btn-primary">TMBD</a>
-                <a asp-action="AddMovie" asp-route-id="@Model.Id" asp-route-t="@x.title" asp-route-d="@x.overview" asp-route-p="@img" asp-route-i="@idd" class="btn btn-primary" method="post">Add Movie</a>
+                <a asp-action="AddMovie" asp-route-id="@Model.movieListId" asp-route-t="@x.title" asp-route-d="@x.overview" asp-route-p="@img" asp-route-i="@idd" class="btn btn-primary" method="post">Add Movie</a>
                 </div>
             </div>
             </div>
@@ -45,9 +45,9 @@
         <form asp-action="AddMovie">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" disabled/>
-                <span asp-validation-for="Id" class="text-danger"></span>
+                <label asp-for="movieListId" class="control-label"></label>
+                <input asp-for="movieListId" class="form-control" disabled/>
+                <span asp-validation-for="movieListId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -77,7 +77,7 @@
 </div>
 
 <div>
-    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Return</a>
+    <a asp-action="Details" asp-route-id="@Model.movieListId" class="btn btn-primary">Return</a>
 </div>
 
 <script type="text/javascript">

@@ -29,6 +29,26 @@
                         </li>
                     </ul>
                 </div>
+                
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="nav-item" style="float:right;">
+                                <a class="nav-item text-dark" asp-action="Index" asp-controller="Account">@User.Identity.Name</a>
+                            </div>
+                            <div class="nav-item" style="float:right;">
+                                <a class="nav-item text-dark" asp-action="LogOut" asp-controller="Account">Logout</a>
+                            </div>
+                        }
+                        else
+                        {
+                            
+                            <div class="nav-item" style="float:right;">
+                                <a class="nav-link text-dark" asp-action="Login" asp-controller="Account">Login</a>
+                            </div>
+                            <div class="nav-item" style="float:right;">
+                                <a class="nav-link text-dark" asp-action="Register" asp-controller="Account">Register</a>
+                            </div>
+                        }
             </div>
         </nav>
     </header>

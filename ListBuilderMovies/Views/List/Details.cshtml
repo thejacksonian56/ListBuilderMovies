@@ -11,10 +11,10 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.id)
+            @Html.DisplayNameFor(model => model.movieListId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.id)
+            @Html.DisplayFor(model => model.movieListId)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -48,28 +48,34 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.Movies) {
-        <tr>
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @item.Description
-            </td>
-            <td>
-                <img src="@item.ImageLocation" width="150" height="250"/>
-            </td>
-            <td>
-                <a href="@item.Url" class="btn btn-primary">TMBD</a>
-            </td>
-        </tr>
-    }
+    @foreach (var item in ViewBag.Movies) {
+                @if (item.movieListId == Model.movieListId)
+                {
+                    <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        <img src="@item.ImageLocation" width="150" height="250"/>
+                    </td>
+                    <td>
+                        <a href="@item.Url" class="btn btn-primary" target="_blank">TMBD</a>
+                    </td>
+                </tr>
+                }
+            }
     </tbody>
 </table>
 
 </div>
 <div>
-    <a asp-action="AddMovie" asp-route-id="@Model.id" class="btn btn-primary">Add Movie</a>
-    <a asp-controller="List" asp-action="Edit" asp-route-id="@Model.id" class="btn btn-primary">Edit Movie List</a>
+    @if (Model.User == User.Identity.Name)
+    {
+        <a asp-action="AddMovie" asp-route-id="@Model.movieListId" class="btn btn-primary">Add Movie</a>
+        <a asp-controller="List" asp-action="Edit" asp-route-id="@Model.movieListId" class="btn btn-primary">Edit Movie List</a>
+    }
     <a asp-action="Index" class="btn btn-primary">Back to List</a>
 </div>

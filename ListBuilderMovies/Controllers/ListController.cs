@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ListBuilderMovies.Controllers
 {
@@ -22,29 +24,37 @@ namespace ListBuilderMovies.Controllers
         {
             IndexViewModel model = new IndexViewModel();
             model.movieLists = _tempdata.ReadAll();
+            model.movies = _tempdata.getMovies();
             return View(model);
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(MovieList obj)
         {
+            obj.User = User.Identity.Name;
             _tempdata.newMovieList(obj);
-            return RedirectToAction("Details", new { id = obj.id });
+            return RedirectToAction("Details", new { id = obj.movieListId });
         }
 
         public IActionResult Details(int? id)
         {
+
+            List<Movie> bonk = _tempdata.getMovies();
+            ViewBag.Movies = bonk;
             MovieList obj = _tempdata.getMovieListById(id);
             return View(obj);
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Delete(int? id)
         {
             MovieList obj = _tempdata.getMovieListById(id);
@@ -54,27 +64,37 @@ namespace ListBuilderMovies.Controllers
         [HttpPost]
         public IActionResult Delete(MovieList obj)
         {
-            _tempdata.deleteMovieList(obj.id);
+            _tempdata.deleteMovieList(obj.movieListId);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Edit(int? id)
         {
             MovieList obj = _tempdata.getMovieListById(id);
-            return View(obj);
+            if (obj.User == User.Identity.Name)
+            {
+                return View(obj);
+            }
+            else
+            {
+                return RedirectToAction("Denied", "List");
+            }
         }
 
         [HttpPost]
         public IActionResult Edit(MovieList movieList)
         {
             _tempdata.editMovieList(movieList);
-            return RedirectToAction("Details", new { id = movieList.id });
+            return RedirectToAction("Details", new { id = movieList.movieListId });
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult AddMovie(int? id, string query, string t, string d, string p, string i)
         {
+            List<Movie> movies = _tempdata.getMovies();
             if (t != null && id != null && d != null && p != null && i != null)
             {
                 Movie tester = new Movie()
@@ -83,15 +103,15 @@ namespace ListBuilderMovies.Controllers
                     Description = d,
                     ImageLocation = p,
                     Url = i,
-                    Id = id
+                    movieListId = (int)id
                 };
                 _tempdata.addMovie(tester);
-                return RedirectToAction("Details", new { id = tester.Id });
+                return RedirectToAction("Details", new { id = tester.movieListId });
             }
             else
             {
                 Movie movie = new Movie();
-                movie.Id = (int)id;
+                movie.movieListId = (int)id;
                 if (query != null)
                 {
                     HttpClient httpClient = _httpClientFactory.CreateClient();
@@ -112,7 +132,7 @@ namespace ListBuilderMovies.Controllers
                 _tempdata.addMovie(movie);
                 return View(movie);
             }
-            return RedirectToAction("Details", new {id = movie.Id});
+            return RedirectToAction("Details", new {id = movie.movieListId});
         }
     }
 }

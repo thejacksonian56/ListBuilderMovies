@@ -13,9 +13,9 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="id" class="control-label"></label>
-                <input asp-for="id" class="form-control" />
-                <span asp-validation-for="id" class="text-danger"></span>
+                <label asp-for="movieListId" class="control-label"></label>
+                <input asp-for="movieListId" class="form-control" />
+                <span asp-validation-for="movieListId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -40,7 +40,7 @@
 </div>
 
 <div>
-    <a asp-action="Details" asp-route-id="@Model.id">Go Back</a>
+    <a asp-action="Details" asp-route-id="@Model.movieListId">Go Back</a>
 </div>
 
 @section Scripts {

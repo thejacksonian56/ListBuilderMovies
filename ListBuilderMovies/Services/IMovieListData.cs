@@ -12,6 +12,7 @@ namespace ListBuilderMovies.Services
         void editMovieList(MovieList movieList);
         void deleteMovieList(int? id);
         void addMovie(Movie movie);
+        List<Movie> getMovies();
 
 
     }

@@ -13,7 +13,7 @@ namespace ListBuilderMovies.Services
             {
                 new MovieList()
                 {
-                    id = 5,
+                    movieListId = 5,
                     Name = "Test",
                     Description = "Test movie list for the project",
                     User = "Admin",
@@ -33,7 +33,7 @@ namespace ListBuilderMovies.Services
 
         public void deleteMovieList(int? id)
         {
-            var obj = getMovieLists.Find(x => x.id == id);
+            var obj = getMovieLists.Find(x => x.movieListId == id);
             if (obj != null)
             {
                 getMovieLists.Remove(obj);
@@ -42,10 +42,10 @@ namespace ListBuilderMovies.Services
 
         public void editMovieList(MovieList bonk)
         {
-            var obj = getMovieLists.Find(x => x.id == bonk.id);
+            var obj = getMovieLists.Find(x => x.movieListId == bonk.movieListId);
             if (obj != null)
             {
-                obj.id = bonk.id;
+                obj.movieListId = bonk.movieListId;
                 obj.Name = bonk.Name;
                 obj.Description = bonk.Description;
                 obj.User = bonk.User;
@@ -66,7 +66,7 @@ namespace ListBuilderMovies.Services
 
         public MovieList getMovieListById(int? id)
         {
-            var obj = getMovieLists.Find(x => x.id == id);
+            var obj = getMovieLists.Find(x => x.movieListId == id);
             if (obj != null)
             {
                 return obj;
@@ -76,11 +76,16 @@ namespace ListBuilderMovies.Services
         //Comment
         public void addMovie(Movie movie)
         {
-            var obj = getMovieLists.Find(x => x.id == movie.Id);
+            var obj = getMovieLists.Find(x => x.movieListId == movie.movieListId);
             if (obj != null)
             {
                 obj.Movies.Add(movie);
             }
+        }
+
+        public List<Movie> getMovies()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ListBuilderMovies.Services;
+using Microsoft.EntityFrameworkCore;
+using ListBuilderMovies.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ListBuilderMovies
 {
@@ -24,13 +27,25 @@ namespace ListBuilderMovies
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddSingleton<IMovieListData, MovieListData>();
+            //services.AddSingleton<IMovieListData, MovieListData>();
+            services.AddScoped<IMovieListData, DBMovieListData>();
+            services.AddDbContext<MovieListContext>(options => options.UseSqlServer("Server=DESKTOP-OEDSC2T\\SQLEXPRESS;Database=MovieListDB;Trusted_Connection=true;MultipleActiveResultSets=true"));
+            services.AddDbContext<UserContext>(options => options.UseSqlServer("Server=DESKTOP-OEDSC2T\\SQLEXPRESS;Database=MovieListUsersDB;Trusted_Connection=true;MultipleActiveResultSets=true"));
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequiredUniqueChars = 3;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredLength = 8;
+            }).AddEntityFrameworkStores<UserContext>();
             services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(UserContext userContext, MovieListContext movieListContext, IApplicationBuilder app, IWebHostEnvironment env)
         {
+            userContext.Database.EnsureCreated();
+            movieListContext.Database.EnsureCreated();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -40,7 +55,7 @@ namespace ListBuilderMovies
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();

@@ -23,7 +23,7 @@
 @foreach (var item in Model.movieLists) {
         <tr>
             <td>
-                @item.id
+                @item.movieListId
             </td>
             <td>
                 @item.Name
@@ -35,15 +35,21 @@
                 @item.Description
             </td>
             <td>
-                    @foreach(Movie x in item.Movies)
+                    @foreach(Movie x in Model.movies)
                     {
-                        <img src="@x.ImageLocation" width="60" height="100" />
+                        @if (x.movieListId == item.movieListId)
+                        {
+                            <img src="@x.ImageLocation" width="60" height="100" />
+                        }
                     }
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.id">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                    @if (item.User == User.Identity.Name)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.movieListId">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.movieListId">Delete</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.movieListId">Details</a>
             </td>
         </tr>
 }
